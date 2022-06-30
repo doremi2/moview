@@ -7,40 +7,42 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 
 
-export default function Home({results}:any) {
+export default function Home({results}: any) {
+  console.log(results);
   const router = useRouter();
-  const onClick = (id:string,title:string) => {
+  const onClick = (movie: any) => {
+    console.log(movie);
     router.push({
-      pathname: `/movies/${title}/${id}`,
-      query: {
-        title:title,
-      },
-    },//URL에 대한 정보를 설정해주는 부분
-      `movies/${title}/${id}`, //브라우저에 보이는 URL 마스킹
-      );
+        pathname: `/movies/${movie.title}/${movie.id}`,
+        query: {
+          imgpath: movie.poster_path,
+          overview: movie.overview
+        },
+      },//URL에 대한 정보를 설정해주는 부분
+      `movies/${movie.title}/${movie.id}`, //브라우저에 보이는 URL 마스킹
+    );
   }
   return (
-    <div className={"container"}>
+    <div className="main-view">
       <Seo title="home"/>
       {results?.map((movie: any) => (
-          <div key={movie.id} className={"movie"} onClick={()=>onClick(movie.id,movie.original_title)}>
-            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
-            <h4>
-              <Link href={`/movies/${movie.original_title}/${movie.id}`}>
-                <a>
-                  {movie.original_title},
-                </a>
-              </Link>
-            </h4>
+        <div key={movie.id} className={"movie"} onClick={() => onClick(movie)}>
+          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+          <h4>
+            <Link href={`/movies/${movie.title}/${movie.id}`}>
+              <a>
+                {movie.title}
+              </a>
+            </Link>
+          </h4>
         </div>
-          ))}
+      ))}
       <style jsx>{`
-        .container {
-          display: grid;
+        .main-view {
           grid-template-columns: 1fr 1fr;
-          padding: 20px;
-          gap: 20px;
-          background-color: #171616;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
         .movie {
@@ -71,7 +73,7 @@ export default function Home({results}:any) {
 } //function end;
 
 export async function getServerSideProps() { //다른이름으로 바꾸면 안됨 ! //API Fetch
-  const {results} = await(await fetch(`http://localhost:3000/api/movies`)).json();
+  const {results} = await (await fetch(`http://localhost:3000/api/movies`)).json();
   return {
     props: {
       results,
