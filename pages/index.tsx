@@ -27,7 +27,7 @@ export default function Home({results}: any) {
       <Seo title="home"/>
       {results?.map((movie: any) => (
         <div key={movie.id} className={"movie"} onClick={() => onClick(movie)}>
-          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+          <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}/>
           <h4>
             <Link href={`/movies/${movie.title}/${movie.id}`}>
               <a>
@@ -47,8 +47,8 @@ export default function Home({results}: any) {
 
         .movie {
           cursor: pointer;
-          width: 270px;
-          height: 500px;
+          width: 300px;
+          height: 300px;
         }
 
         .movie img {

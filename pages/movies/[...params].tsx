@@ -16,7 +16,7 @@ export default function Detail({params}: any) {
       <img src={`https://image.tmdb.org/t/p/w500${query.imgpath}`}/>
       <h2>OVERVIEW</h2>
       <h4>{query.overview}</h4>
-      <button className={"back"}>이전으로 돌아가기</button>
+      <button className={"back"} onClick={()=> history.back()}>이전으로 돌아가기</button>
       <style jsx>{`
         .detail-movie {
           display: flex;
