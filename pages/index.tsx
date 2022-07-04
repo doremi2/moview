@@ -8,10 +8,8 @@ import {useRouter} from "next/router";
 
 
 export default function Home({results}: any) {
-  console.log(results);
   const router = useRouter();
   const onClick = (movie: any) => {
-    console.log(movie);
     router.push({
         pathname: `/movies/${movie.title}/${movie.id}`,
         query: {
@@ -35,6 +33,8 @@ export default function Home({results}: any) {
               </a>
             </Link>
           </h4>
+          <h5>개봉일 | {movie.release_date} &nbsp; &nbsp; 평점 | {movie.vote_average}</h5>
+          <button>감독/출연진</button>
         </div>
       ))}
       <style jsx>{`
@@ -47,8 +47,9 @@ export default function Home({results}: any) {
 
         .movie {
           cursor: pointer;
-          width: 300px;
-          height: 300px;
+          width: auto;
+          height: auto;
+          padding-top: 20px;
         }
 
         .movie img {
