@@ -1,8 +1,5 @@
-//JS version ==> show Loading fail
 
-import Head from "next/head";
 import Seo from "../components/Seo";
-import {useEffect, useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 
@@ -13,7 +10,7 @@ export default function Home({results}: any) {
     router.push({
         pathname: `/movies/${movie.title}/${movie.id}`,
         query: {
-          imgpath: movie.poster_path,
+          imgpath: movie.backdrop_path,
           overview: movie.overview
         },
       },//URL에 대한 정보를 설정해주는 부분
@@ -23,9 +20,13 @@ export default function Home({results}: any) {
   return (
     <div className="main-view">
       <Seo title="home"/>
+      <div>
+        <input className={"search"} placeholder={"Search Movie ..."}/>
+        <button className={"search-btn"}>Search</button>
+      </div>
       {results?.map((movie: any) => (
         <div key={movie.id} className={"movie"} onClick={() => onClick(movie)}>
-          <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}/>
+          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
           <h4>
             <Link href={`/movies/${movie.title}/${movie.id}`}>
               <a>
@@ -34,16 +35,10 @@ export default function Home({results}: any) {
             </Link>
           </h4>
           <h5>개봉일 | {movie.release_date} &nbsp; &nbsp; 평점 | {movie.vote_average}</h5>
-          <button>감독/출연진</button>
         </div>
       ))}
       <style jsx>{`
-        .main-view {
-          grid-template-columns: 1fr 1fr;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
+        
 
         .movie {
           cursor: pointer;
@@ -52,6 +47,33 @@ export default function Home({results}: any) {
           padding-top: 20px;
         }
 
+        .search {
+          width: 300px;
+          height: 50px;
+          font-size: 15px;
+          font-weight: bold;
+          border: darkred 3px solid;
+          background-color: unset;
+          color: white;
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+        
+        input:focus {
+          outline: none;
+        }
+
+        .search-btn {
+          width: auto;
+          height: 50px;
+          margin-left: 10px;
+          padding: 10px;
+          background-color: #340f10;
+          color: red;
+          border: darkred solid 3px;
+          font-weight: bold;
+        }
+        
         .movie img {
           max-width: 100%;
           border-radius: 12px;
@@ -68,6 +90,8 @@ export default function Home({results}: any) {
           text-align: center;
           color: white;
         }
+
+
       `}</style>
     </div>
   ); //return end;

@@ -25,6 +25,10 @@ module.exports = {
       {
         source: "/api/movies/:id/review/:page",
         destination: `https://api.themoviedb.org/3/movie/:id/reviews?api_key=${API_KEY}&page=:page`,
+      },
+      {
+        source: "/api/genre",
+        destination: `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=ko-KR`,
       }
       ]
 

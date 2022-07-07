@@ -17,8 +17,7 @@ export default function Detail({params}: any) {
   const router = useRouter(); //컴포넌트 내부에서 router를 사용하면 router는 프론트에서만 실행이 된다.
   const query = router.query;
   const [title, id]: data = params;
-  const [contentState, setConSate] = useState(false);
-  let page = 1;
+  const [targetId, setTargetId] = useState();
 
   const [reviews, setReviews] = useState([]);
 
@@ -33,29 +32,44 @@ export default function Detail({params}: any) {
           )
         ).json();
         setReviews(results);
-        console.log(reviews);
       })();
     }, []);
   }
 
-  function ShowOrHideContent() {
-    setConSate(!contentState);
+  function showOrHideContent(e: any) {
+    const showBox = e.parentNode.nextElementSibling.classList;
+    const isShow = showBox.contains("rev-show");
+    console.log(isShow);
+    if (isShow) {
+      showBox.add("rev-none");
+      showBox.remove("rev-show");
+    } else {
+      showBox.add("rev-show");
+      showBox.remove("rev-none");
+    }
   }
 
   return (
     <div className={"detail-movie"} key={id}>
       <Seo title={title}/> {/*title Name*/}
       <h1>{title}</h1>
+      <h2>아래 추후 동영상 기재</h2>
       <img src={`https://image.tmdb.org/t/p/w500${query.imgpath}`}/>
       <h2>OVERVIEW</h2>
-      <h4>{query.overview}</h4>
+      <div className={"overview-box"}>
+        <div className={"cover-box"}>
+          <h4 className={"overview-text"}>{query.overview}</h4>
+        </div>
+      </div>
       <br/>
       <h2>Review</h2>
       {reviews.map((rev: any) => (
         <div key={rev.id} className={"review-box"}>
           <h4>작성자 |{rev.author_details.name} &nbsp;&nbsp; 평점 | {rev.author_details.rating}</h4>
-          <h4>코멘트 <input type={"button"} onClick={() => ShowOrHideContent()} value={contentState?"펼치기":"접기"}/></h4>
-          <div className={contentState ? "rev-none" : "rev-show"}>
+          <h4>코멘트 <button id={rev.id} className={"open-btn"}
+                          onClick={(e) => showOrHideContent(e.target)}>{(targetId != `${rev.id}`) ? "펼치기" : "접기"}</button>
+          </h4>
+          <div key={rev.id} className={"rev-none"} >
             <h5>{rev.content}</h5>
           </div>
 
@@ -75,18 +89,44 @@ export default function Detail({params}: any) {
 
         .review-box {
           border: darkgray 1px solid;
-          background-color: dimgrey;
           padding: 10px;
           width: 100%;
 
         }
+
+        .overview-box {
+          align-items: center;
+          background-image: url("https://image.tmdb.org/t/p/w500${query.imgpath}");
+          background-size: cover;
+          padding: 20px;
+          border-radius: 12px;
+          height:auto;
+          width: 600px;
+          height: 350px;
+        }
+
+        .cover-box {
+          border-radius: 12px;
+          align-items: center;
+          width: 95%;
+          margin-left: 2.5%;
+          padding: 2%;
+          background-color: #ffffff;
+          background-color: rgba(200, 200, 200, 0.4);
+        }
+        
+        .overview-text {
+          color: black;
+          font-weight: bold;
+        }
+
 
         .review-box:last-of-type { //마지막 요소에만 적용
           margin-bottom: 10px;
         }
 
         .review-box h4, h5 {
-          color: black;
+          color: white;
         }
 
         .rev-none {
@@ -95,6 +135,13 @@ export default function Detail({params}: any) {
 
         .rev-show {
           display: block;
+        }
+
+        .open-btn {
+          background-color: unset;
+          border: darkred 2px solid;
+          color: darkred;
+          font-weight: bold;
         }
 
         img {
@@ -126,7 +173,7 @@ export default function Detail({params}: any) {
 }
 
 export function getServerSideProps({params: {params}}: any) { //SEO 최적화에 강력
-                                                              //console.log("ctx:",ctx); --> context => 내부에 params 가 있음 △ 함수 내에 넣어줌
+  //console.log("ctx:",ctx); --> context => 내부에 params 가 있음 △ 함수 내에 넣어줌
   return {
     props: {
       params,

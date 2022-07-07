@@ -6,6 +6,10 @@ body {
   background-color: #171616;
 }
 
+body::-webkit-scrollbar{
+  display: none; /*스크롤 기능은 살리면서 스크롤 디자인은 숨기기*/
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -19,6 +23,13 @@ a {
   padding: 20px;
 }
 
-h1,h4,h5 {
+h1,h3,h4,h5 {
   color: white;
+}
+
+.main-view {
+  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
