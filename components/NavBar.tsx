@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import styles from "./NavBar.module.css";
 import {useRouter} from "next/router";
 
 export default function NavBar() {
@@ -10,7 +9,7 @@ export default function NavBar() {
       <Link href={"/"}>
         <a>
           <div className={"main-banner"}>
-            <h1>𝕄𝕠.𝕍𝕚𝕖𝕨</h1>
+            <h1 className={"shadow font-showcard"}>Mo.View</h1>
           </div>
         </a>
       </Link>
@@ -39,28 +38,21 @@ export default function NavBar() {
         }
 
         .main-banner {
-          background-image: url("/movie.gif");
-          background-size: cover;
           width: 650px;
-          height: 170px;
+          height: 100px;
+          background-image: url("/navbanner.jpg");
         }
 
-        img {
-          width: 210px;
-          height: 100px;
-          position: absolute;
-        }
 
         nav a {
           font-weight: 1000;
           font-size: 25px;
-          font-family: "Anonymous Pro";
           color: #bdbcbc;
           margin-left: 20px;
         }
 
         nav .active {
-          color: darkred;
+          color: #bf091b;
         }
 
         nav div {

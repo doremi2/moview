@@ -17,7 +17,7 @@ export default function Detail({params}: any) {
   const router = useRouter(); //컴포넌트 내부에서 router를 사용하면 router는 프론트에서만 실행이 된다.
   const query = router.query;
   const [title, id]: data = params;
-  const [targetId, setTargetId] = useState();
+  const [show, setShow] = useState(false);
 
   const [reviews, setReviews] = useState([]);
 
@@ -43,14 +43,16 @@ export default function Detail({params}: any) {
     if (isShow) {
       showBox.add("rev-none");
       showBox.remove("rev-show");
+      setShow(false);
     } else {
       showBox.add("rev-show");
       showBox.remove("rev-none");
+      setShow(true);
     }
   }
 
   return (
-    <div className={"detail-movie"} key={id}>
+    <div className={"main-view"} key={id}>
       <Seo title={title}/> {/*title Name*/}
       <h1>{title}</h1>
       <h2>아래 추후 동영상 기재</h2>
@@ -67,7 +69,7 @@ export default function Detail({params}: any) {
         <div key={rev.id} className={"review-box"}>
           <h4>작성자 |{rev.author_details.name} &nbsp;&nbsp; 평점 | {rev.author_details.rating}</h4>
           <h4>코멘트 <button id={rev.id} className={"open-btn"}
-                          onClick={(e) => showOrHideContent(e.target)}>{(targetId != `${rev.id}`) ? "펼치기" : "접기"}</button>
+                          onClick={(e) => showOrHideContent(e.target)}>{(show) ? "접기" : "보기"}</button>
           </h4>
           <div key={rev.id} className={"rev-none"} >
             <h5>{rev.content}</h5>
@@ -126,7 +128,6 @@ export default function Detail({params}: any) {
         }
 
         .review-box h4, h5 {
-          color: white;
         }
 
         .rev-none {
@@ -139,8 +140,6 @@ export default function Detail({params}: any) {
 
         .open-btn {
           background-color: unset;
-          border: darkred 2px solid;
-          color: darkred;
           font-weight: bold;
         }
 
@@ -153,17 +152,14 @@ export default function Detail({params}: any) {
         }
 
         h2 {
-          color: black;
           -webkit-text-stroke-width: 1.5px;
           -webkit-text-stroke-color: #891015;
         }
 
         .back {
-          background-color: darkred;
           font-size: 18px;
           padding: 10px;
           width: 500px;
-          color: white;
         }
       `}
 

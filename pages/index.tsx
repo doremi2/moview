@@ -54,7 +54,6 @@ export default function Home({results}: any) {
           font-weight: bold;
           border: darkred 3px solid;
           background-color: unset;
-          color: white;
           padding-left: 10px;
           padding-right: 10px;
         }
@@ -86,9 +85,9 @@ export default function Home({results}: any) {
         }
 
         .movie h4 {
-          font-size: 17px;
+          font-size: 20px;
           text-align: center;
-          color: white;
+          font-weight: 900;
         }
 
 
