@@ -16,10 +16,12 @@ export default function Genre() {
     })()
   }, []);
 
-  console.log(genre);
-  const movePage = (id:string) => {
+  const movePage = (id:string,name:string) => {
     router.push({
       pathname: `genre/${id}`,
+      query: {
+        genrename: name,
+      },
     },
       )
   }
@@ -28,7 +30,7 @@ export default function Genre() {
     <div className={"main-view"}>
       <Seo title={"genre"}/>
       {genre.map((gen: any) => (
-        <div key={gen.id} className={"genre-box"} onClick={()=> movePage(gen.id)}>
+        <div key={gen.id} className={"genre-box"} onClick={()=> movePage(gen.id,gen.name)}>
           <h3 className={"genre-name"}>{gen.name}</h3>
         </div>
       ))}

@@ -1,6 +1,7 @@
 import {useRouter} from "next/router";
 import Seo from "../../components/Seo";
 import {useEffect, useState} from "react";
+import {CallAPI} from "../../components/common";
 
 export default function Detail({params}: any) {
   type data = [
@@ -14,6 +15,7 @@ export default function Detail({params}: any) {
     created_at: string;
     id: string;
   }
+
   const router = useRouter(); //컴포넌트 내부에서 router를 사용하면 router는 프론트에서만 실행이 된다.
   const query = router.query;
   const [title, id]: data = params;
@@ -23,6 +25,8 @@ export default function Detail({params}: any) {
 
   GetReviews(id, 1);
 
+  const castData = CallAPI(`/api/movies/cast/${id}`);
+  console.log(castData);
   function GetReviews(id: string, page: number) {
     useEffect(() => {
       (async () => {
@@ -38,15 +42,17 @@ export default function Detail({params}: any) {
 
   function showOrHideContent(e: any) {
     const showBox = e.parentNode.nextElementSibling.classList;
+    console.log(e.innerText);
     const isShow = showBox.contains("rev-show");
-    console.log(isShow);
     if (isShow) {
       showBox.add("rev-none");
       showBox.remove("rev-show");
       setShow(false);
+      e.innerText = "보기";
     } else {
       showBox.add("rev-show");
       showBox.remove("rev-none");
+      e.innerText = "접기";
       setShow(true);
     }
   }
@@ -68,8 +74,8 @@ export default function Detail({params}: any) {
       {reviews.map((rev: any) => (
         <div key={rev.id} className={"review-box"}>
           <h4>작성자 |{rev.author_details.name} &nbsp;&nbsp; 평점 | {rev.author_details.rating}</h4>
-          <h4>코멘트 <button id={rev.id} className={"open-btn"}
-                          onClick={(e) => showOrHideContent(e.target)}>{(show) ? "접기" : "보기"}</button>
+          <h4>Comment <button id={rev.id} className={"open-btn"}
+                          onClick={(e) => showOrHideContent(e.target)}>보기</button>
           </h4>
           <div key={rev.id} className={"rev-none"} >
             <h5>{rev.content}</h5>
@@ -141,6 +147,7 @@ export default function Detail({params}: any) {
         .open-btn {
           background-color: unset;
           font-weight: bold;
+          margin-left: 5px;
         }
 
         img {

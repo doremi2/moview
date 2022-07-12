@@ -1,7 +1,7 @@
 const API_KEY = process.env.API_KEY;
 
 module.exports = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   async redirects(){
     return [{
       source: "/old-blog/:path*", //입력받은주소
@@ -29,6 +29,14 @@ module.exports = {
       {
         source: "/api/genre",
         destination: `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=ko-KR`,
+      },
+      {
+        source: "/api/genre/:id",
+        destination: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=ko-KR&with_genres=:id`,
+      },
+      {
+        source: "/api/movies/cast/:id",
+        destination: `https://api.themoviedb.org/3/movie/:id/credits?api_key=${API_KEY}&language=ko-KR`,
       }
       ]
 
